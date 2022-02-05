@@ -3,9 +3,6 @@ h1 {
 }
 
 .buttonRow {
-    display: inline-block;
+    display: inline;
 }
 
-.inputRow {
-
-}
