@@ -1,6 +1,11 @@
+let operator 
+let numInputs
+
 $(document).ready(onReady);
 console.log('Jquery is Hooked UP!');
 
+
+//operator click listeners
 function onReady() {
     $('#plus').on('click', addInputs)
     $('#negative').on('click', subtractInputs)
@@ -8,25 +13,27 @@ function onReady() {
     $('#divide').on('click', divideInputs)
     $('#clearButton').on('click', clearInputs)
 }
+
 //Clear inputs on button press
 function clearInputs() {
     console.log('in clear inputs');
     $('#firstInput').val('');
     $('#secondInput').val('');
 }
+
 // start input functions
 function subtractInputs(){
     console.log('in Subtract');
     $('#equalsButton').on('click', subtract);
 }
 function subtract(){ 
-    let numInputs = [{
-    numOneInput:$('#firstInput').val(),
-    numTwoInput:$('#secondInput').val(),
-    operator: '-',
-
-    }]
-    
+    operator = '-'
+    numInputs = {
+    numOneInput:Number$('#firstInput').val(),
+    numTwoInput:Number$('#secondInput').val(),
+    operatorInput: operator
+    }
+    sendNumbers (numInputs);
 }    
 
 function addInputs(){
@@ -36,40 +43,67 @@ function addInputs(){
 
 function add(){
     console.log('in add');
-    let numInputs = [{
+    operator = '+';
+    numInputs = {
     numOneInput:$('#firstInput').val(),
     numTwoInput:$('#secondInput').val(),
-    operator: '+',
-    }]
-    console.log(numInputs);
+    operatorInput: operator
+    }
+    sendNumbers(numInputs);
 }
 function multiplyInputs(){
     console.log('in multiply');
     $('#equalsButton').on('click',multiply)
 }
 function multiply(){ 
-    let numInputs = [{
+    operator = '*';
+    numInputs = {
     numOneInput:$('#firstInput').val(),
     numTwoInput:$('#secondInput').val(),
-    operator: '*'
-    }]
-    console.log(numInputs);
+    operatorInput: operator
+    }
+    sendNumbers (numInputs);
 }
     
 function divideInputs(){
     console.log('in divide');
-    $('#equalsButton').on('click')
+    $('#equalsButton').on('click',divide)
 }
 function divide(){ 
-    let numInputs = [{
+    operator = '/';
+    numInputs = {
     numOneInput:$('#firstInput').val(),
     numTwoInput:$('#secondInput').val(),
-    operator: '/'
-    }]
-    console.log(numInputs);
+    operatorInput: operator
+    }
+    sendNumbers (numInputs);
 }    
+
+
+
 // END input functions
 
+// // POST request 
+function sendNumbers(numInputs) {
+    console.log(numInputs);
+    // use AJAX to make a POST request to server
+    $.ajax({
+      method: 'POST', // type of request
+      url: '/numbers', // route we will match on
+      data: { // must be an object
+          numInputs
+      }
+    }).then(function(response) {
+      console.log('We Posted!');
+      getNumbers(); 
+    }).catch(function(response) {
+      console.log('Something Bad Happened, POST', response);
+    })
+  }
+  
+
+
+// GET request from server using AJAX
 function getNumbers() {
     // get numbersInputted from server using AJAX
     $.ajax({
@@ -84,8 +118,16 @@ function getNumbers() {
     })
   }
     
-
-
+  function renderToDom(inputArray) {
+    // empty element before reappending everything
+    $('#history').empty();
+    for (let i of inputArray) {
+      $('#history').append(`
+       <li>${i.numOneInput} ${i.operatorInput} ${i.numTwoInput} = </li>
+      `);
+    }
+  }
+  
     
 
 
