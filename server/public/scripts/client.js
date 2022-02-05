@@ -29,8 +29,8 @@ function subtractInputs(){
 function subtract(){ 
     operator = '-'
     numInputs = {
-    numOneInput:Number$('#firstInput').val(),
-    numTwoInput:Number$('#secondInput').val(),
+    numOneInput:$('#firstInput').val(),
+    numTwoInput:$('#secondInput').val(),
     operatorInput: operator
     }
     sendNumbers (numInputs);

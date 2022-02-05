@@ -32,25 +32,35 @@ app.post('/numbers', (req,res) => {
    // Send back a status code of 201
     res.sendStatus(201);
 });
-let addAnswer = 
-let req.body.numInputs.numOneInput = n1;
-let req.body.numInputs.numTwoInput = n2;
-function doSomeMath(){
-    if (req.body.numInputs.operator === '+') {
-        addAnswer = n1+n2
-        return addAnswer
+
+
+// let numberOne = req.body.numInputs.numOneInput
+// let numberTwo = req.body.numInputs.numTwoInput
+
+let addAnswer = 0;
+
+function doSomeMath(numbers){
+    numbers.numOneInput = Number(numbers.numOneInput);
+    numbers.numTwoInput = Number(numbers.numTwoInput);
+    if (numbers.operatorInput === '+') {
+        addAnswer = numbers.numOneInput+numbers.numTwoInput;
+        console.log(addAnswer);
+        //  return addAnswer
     }
-    else if (req.body.numInputs.operator === '-') {
-        addAnswer = n1-n2
-        return addAnswer
+    else if (numbers.operatorInput === '-') {
+        addAnswer = numbers.numOneInput - numbers.numTwoInput;
+        console.log(addAnswer);
+        // return addAnswer
     }
-    else if (req.body.numInputs.operator === '/') {
-        addAnswer = n1/n2
-        return addAnswer
+    else if (numbers.operatorInput === '/') {
+        addAnswer = numbers.numOneInput / numbers.numTwoInput;
+        console.log(addAnswer);
+        // return addAnswer
     }
-    else if (req.body.numInputs.operator === '*') {
-        addAnswer = n1*n2
-        return addAnswer
+    else if (numbers.operatorInput === '*') {
+        addAnswer = numbers.numOneInput * numbers.numTwoInput;
+        console.log(addAnswer);
+        // return addAnswer
     }
 }
 
