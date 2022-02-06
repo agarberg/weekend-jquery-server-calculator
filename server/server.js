@@ -5,8 +5,6 @@ app.use(express.static('server/public'));
 // const { post } = require('jquery');
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended:true}));
-
-const inputArray = require('./modules/numbersInputted');
 const req = require('express/lib/request');
 
 app.get('/numbers', function(req, res) {
@@ -14,6 +12,7 @@ app.get('/numbers', function(req, res) {
     res.send(inputArray);
 });
 
+let inputArray = [];
 
 // POST, receives a new object, adds it to the numbers array
 app.post('/numbers', (req,res) => {
@@ -23,47 +22,45 @@ app.post('/numbers', (req,res) => {
     console.log(`Get a POST request!`, req.body);
 
     // Grab the new inventory from the request body
-    let numbers = req.body.numInputs;
-    doSomeMath(numbers);
+    // let numbers = req.body.numInputs;
+    doSomeMath();
     console.log(req.body.numInputs);
-    // Push the inventory into our array
-    inputArray.push(numbers);
-
    // Send back a status code of 201
     res.sendStatus(201);
 });
 
 
-// let numberOne = req.body.numInputs.numOneInput
-// let numberTwo = req.body.numInputs.numTwoInput
-
 let addAnswer = 0;
 
-function doSomeMath(numbers){
-    numbers.numOneInput = Number(numbers.numOneInput);
-    numbers.numTwoInput = Number(numbers.numTwoInput);
-    if (numbers.operatorInput === '+') {
-        addAnswer = numbers.numOneInput+numbers.numTwoInput;
+function doSomeMath(){
+    req.body.numInputs.numOneInput = Number(req.body.numInputs.numOneInput);
+    req.body.numInputs.numTwoInput = Number(req.body.numInputs.numTwoInput);
+    if (req.body.numInputs.operatorInput === '+') {
+        addAnswer = req.body.numInputs.numOneInput+req.body.numInputs.numTwoInput;
         console.log(addAnswer);
-        //  return addAnswer
+        return addAnswer 
     }
-    else if (numbers.operatorInput === '-') {
-        addAnswer = numbers.numOneInput - numbers.numTwoInput;
+    else if (req.body.numInputs.operatorInput === '-') {
+        addAnswer = req.body.numInputs.numOneInput - req.body.numInputs.numTwoInput;
         console.log(addAnswer);
-        // return addAnswer
+        return addAnswer 
     }
-    else if (numbers.operatorInput === '/') {
-        addAnswer = numbers.numOneInput / numbers.numTwoInput;
+    else if (req.body.numInputs.operatorInput === '/') {
+        addAnswer = req.body.numInputs.numOneInput / req.body.numInputs.numTwoInput;
         console.log(addAnswer);
-        // return addAnswer
+        return addAnswer
     }
-    else if (numbers.operatorInput === '*') {
-        addAnswer = numbers.numOneInput * numbers.numTwoInput;
+    else if (req.body.numInputs.operatorInput === '*') {
+        addAnswer = req.body.numInputs.numOneInput * req.body.numInputs.numTwoInput;
         console.log(addAnswer);
-        // return addAnswer
+        return addAnswer
     }
 }
-
+let addAnswerObj = {
+    equals : addAnswer,
+}
+inputArray.push(addAnswerObj)
+console.log(inputArray);
 
 
 

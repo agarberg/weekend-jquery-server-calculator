@@ -1,2 +1,2 @@
-let inputArray = [];
-module.exports = inputArray;
+// let inputArray = [];
+// module.exports = inputArray;
