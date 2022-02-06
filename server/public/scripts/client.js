@@ -5,7 +5,7 @@ $(document).ready(onReady);
 console.log('Jquery is Hooked UP!');
 
 
-//operator click listeners
+//operator click listeners activated
 function onReady() {
     $('#plus').on('click', add)
     $('#negative').on('click', subtract)
@@ -49,10 +49,9 @@ function clearInputs() {
 // // POST request 
 function sendNumbers() {
     console.log(numInputs);
-    // use AJAX to make a POST request to server
     $.ajax({
-      method: 'POST', // type of request
-      url: '/numbers', // route we will match on
+      method: 'POST', 
+      url: '/numbers', 
       data: {numInputs}
     }).then(function(response) {
       console.log('We sent a POST');
@@ -64,9 +63,8 @@ function sendNumbers() {
   
 
 
-// GET request from server using AJAX
+// get numbers inputted and answers from server
 function getNumbers() {
-    // get numbersInputted from server using AJAX
     $.ajax({
       method: 'GET',
       url: '/numbers'
@@ -74,21 +72,23 @@ function getNumbers() {
       console.log('We Got It!', response);
       // TODO append quotes to DOM
       renderHistory(response);
-      // renderAnswer(response);
+      renderAnswer(response);
     }).catch(function(response) {
       console.log('Something Bad Happened, GET', response);
     })
   }
     
   function renderHistory(startArray) {
-    // empty element before reappending everything
+    // empty element before reappending everything before loop
     $('#history').empty();
     for (let i of startArray) {
         $('#history').append(`
-        <li>${i.numOneInput}${i.operatorInput}${i.numTwoInput}=</li>
+        <li>${i.numInputs.numOneInput}${i.numInputs.operatorInput}${i.numInputs.numTwoInput}=${i.result}</li>
       `);
   }
 }
+//render result to DOM
+//empty after for loop
   function renderAnswer(startArray){ 
     for (let i of startArray) {
       $('#answer').empty();
