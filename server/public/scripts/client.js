@@ -13,6 +13,7 @@ function onReady() {
     $('#divide').on('click', divide)
     $('#equalsButton').on('click', gatherValues)
     $('#clearButton').on('click', clearInputs)
+    getNumbers();
 }
 // choose operator functions
 function subtract(){ 
@@ -27,16 +28,18 @@ function divide(){
 function multiply(){ 
     operator = '*';
 }
+//gather input values and assign operator
 function gatherValues(){
-    numInputs = { 
-    numOneInput:$('#firstInput').val(),
-    numTwoInput:$('#secondInput').val(),
-    operatorInput: operator
+    numOneInput = $('#firstInput').val(),
+    numTwoInput=$('#secondInput').val(),
+    numInputs = {
+      num1Input : numOneInput,
+      num2Input : numTwoInput,
+      operatorInput : operator,
+    }
+    sendNumbers(numInputs)
 }
-sendNumbers (numInputs);
-}
-
-
+//END input functions
 
 //Clear inputs on button press
 function clearInputs() {
@@ -45,110 +48,48 @@ function clearInputs() {
     $('#secondInput').val('');
 }
 
-// // start input functions
-// function subtractInputs(){
-//     console.log('in Subtract');
-//     $('#equalsButton').on('click', subtract);
-// }
-// function subtract(){ 
-//     operator = '-'
-//     numInputs = {
-//     numOneInput:$('#firstInput').val(),
-//     numTwoInput:$('#secondInput').val(),
-//     operatorInput: operator,
-//     }
-//     sendNumbers (numInputs);
-// }    
-
-// function addInputs(){
-//     console.log('in add');
-//     $('#equalsButton').on('click', add)
-// }
-
-// function add(){
-//     console.log('in add');
-//     operator = '+';
-//     numInputs = {
-//     numOneInput:$('#firstInput').val(),
-//     numTwoInput:$('#secondInput').val(),
-//     operatorInput: operator,
-//     }
-//     sendNumbers(numInputs);
-// }
-// function multiplyInputs(){
-//     console.log('in multiply');
-//     $('#equalsButton').on('click',multiply)
-// }
-// function multiply(){ 
-//     operator = '*';
-//     numInputs = {
-//     numOneInput:$('#firstInput').val(),
-//     numTwoInput:$('#secondInput').val(),
-//     operatorInput: operator,
-//     }
-//     sendNumbers (numInputs);
-// }
-    
-// function divideInputs(){
-//     console.log('in divide');
-//     $('#equalsButton').on('click',divide)
-// }
-// function divide(){ 
-//     operator = '/';
-//     numInputs = {
-//     numOneInput:$('#firstInput').val(),
-//     numTwoInput:$('#secondInput').val(),
-//     operatorInput: operator,
-//     }
-//     sendNumbers (numInputs);
-// }    
-
-// END input functions
-
-// // // POST request 
-// function sendNumbers(numInputs) {
-//     console.log(numInputs);
-//     // use AJAX to make a POST request to server
-//     $.ajax({
-//       method: 'POST', // type of request
-//       url: '/numbers', // route we will match on
-//       data: { // must be an object
-//           numInputs
-//       }
-//     }).then(function(response) {
-//       console.log('We Posted!');
-//       getNumbers(); 
-//     }).catch(function(response) {
-//       console.log('Something Bad Happened, POST', response);
-//     })
-//   }
+// // POST request 
+function sendNumbers(numInputs) {
+    console.log(numInputs);
+    // use AJAX to make a POST request to server
+    $.ajax({
+      method: 'POST', // type of request
+      url: '/numbers', // route we will match on
+      data: numInputs
+    }).then(function(response) {
+      console.log('We sent a POST');
+      getNumbers(); 
+    }).catch(function(response) {
+      console.log('Something Bad Happened, POST', response);
+    })
+  }
   
 
 
-// // GET request from server using AJAX
-// function getNumbers() {
-//     // get numbersInputted from server using AJAX
-//     $.ajax({
-//       method: 'GET',
-//       url: '/numbers'
-//     }).then(function(response) {
-//       console.log('We Got It!', response);
-//       // TODO append quotes to DOM
-//       renderToDom(response);
-//     }).catch(function(response) {
-//       console.log('Something Bad Happened, GET', response);
-//     })
-//   }
+// GET request from server using AJAX
+function getNumbers() {
+    // get numbersInputted from server using AJAX
+    $.ajax({
+      method: 'GET',
+      url: '/numbers'
+    }).then(function(response) {
+      console.log('We Got It!', response);
+      // TODO append quotes to DOM
+      renderToDom(response);
+    }).catch(function(response) {
+      console.log('Something Bad Happened, GET', response);
+    })
+  }
     
-//   function renderToDom(inputArray) {
-//     // empty element before reappending everything
-//     $('#history').empty();
-//     for (let i of inputArray) {
-//         $('#history').append(`
-//         <li>${i.numOneInput} ${i.operatorInput} ${i.numTwoInput} = </li>
-//       `);
-//     }
-//   }
+  function renderToDom(historyArray) {
+    // empty element before reappending everything
+    $('#history').empty();
+    for (let i of historyArray) {
+        $('#history').append(`
+        <li>${i.n1i} ${i.op}, ${i.n2i} = ${i.ans} </li>
+      `);
+    }
+  }
   
     
 

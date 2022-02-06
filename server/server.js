@@ -7,30 +7,66 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended:true}));
 const req = require('express/lib/request');
 
+let startArray = [];
+let historyArray = [];
+
 app.get('/numbers', function(req, res) {
     console.log('Request for /numbers was made');
-    res.send(inputArray);
+    res.send(historyArray);
 });
 
-let inputArray = [];
-
+let numbers = 0;
 // POST, receives a new object, adds it to the numbers array
 app.post('/numbers', (req,res) => {
     // The data (body) sent from the client is saved for us
     // in `req.body`
     // Note that without bodyParser setup, req.body will be undefined!
-    console.log(`Get a POST request!`, req.body);
+    console.log(`GOT a POST request!`, req.body);
+    startArray.push( req.body );
+    numbers = req.body.numInputs;
+    
 
-    // Grab the new inventory from the request body
-    // let numbers = req.body.numInputs;
-    doSomeMath();
-    console.log(req.body.numInputs);
+
    // Send back a status code of 201
     res.sendStatus(201);
 });
 
 
-let addAnswer = 0;
+function doSomeMath(numbers){
+    numbers.num1Input = Number(numbers.num1Input);
+    numbers.num2Input = Number(numbers.num2Input);
+    if (numbers.operatorInput === '+') {
+        addAnswer = numbers.num1Input += numbers.num2Input;
+        console.log(addAnswer);
+        return addAnswer 
+    }
+    if (numbers.operatorInput === '-') {
+        addAnswer = numbers.num1Input - numbers.num2Input;
+        console.log(addAnswer);
+        return addAnswer 
+        addAnswer 
+    }
+    if (numbers.operatorInput === '/') {
+        addAnswer = numbers.num1Input / numbers.num2Input;
+        console.log(addAnswer);
+        return addAnswer
+    }
+    if (numbers.operatorInput === '*') {
+        addAnswer = numbers.num1Input * numbers.num2Input;
+        console.log(addAnswer);
+        return addAnswer
+    }
+    let completeObject = {
+        n1i : numbers.num1Input,
+        n2i : numbers.num2Input,
+        op : numbers.operatorInput,
+        ans : addAnswer,
+    }
+    historyArray.push(completeObject)
+}
+
+
+
 
 function doSomeMath(){
     req.body.numInputs.numOneInput = Number(req.body.numInputs.numOneInput);
@@ -56,11 +92,7 @@ function doSomeMath(){
         return addAnswer
     }
 }
-let addAnswerObj = {
-    equals : addAnswer,
-}
-inputArray.push(addAnswerObj)
-console.log(inputArray);
+
 
 
 
