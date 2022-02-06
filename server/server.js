@@ -8,14 +8,28 @@ app.use(bodyParser.urlencoded({extended:true}));
 const req = require('express/lib/request');
 
 let startArray = [];
-let historyArray = [];
+// let answerArray = [];
+let numbers = 0;
+let addAnswer = 0
 
 app.get('/numbers', function(req, res) {
     console.log('Request for /numbers was made');
-    res.send(historyArray);
+    res.send(startArray);
+    // res.send(answerArray);
+    console.log(startArray);
+    // console.log(answerArray);
 });
 
-let numbers = 0;
+app.get('/numbers', function(req, res) {
+    console.log('Request for /numbers was made');
+    res.send(startArray);
+    // res.send(answerArray);
+    console.log(startArray);
+    // console.log(answerArray);
+});
+
+
+
 // POST, receives a new object, adds it to the numbers array
 app.post('/numbers', (req,res) => {
     // The data (body) sent from the client is saved for us
@@ -23,75 +37,41 @@ app.post('/numbers', (req,res) => {
     // Note that without bodyParser setup, req.body will be undefined!
     console.log(`GOT a POST request!`, req.body);
     startArray.push( req.body );
-    numbers = req.body.numInputs;
-    
-
-
+    console.log('');
+    numbers = req.body;
+    doSomeMath(numbers);
+    addAnswer = {result : addAnswer}
+    startArray.push( addAnswer )
    // Send back a status code of 201
     res.sendStatus(201);
 });
 
-
 function doSomeMath(numbers){
-    numbers.num1Input = Number(numbers.num1Input);
-    numbers.num2Input = Number(numbers.num2Input);
-    if (numbers.operatorInput === '+') {
-        addAnswer = numbers.num1Input += numbers.num2Input;
-        console.log(addAnswer);
-        return addAnswer 
+    numbers.numInputs.numOneInput = Number(numbers.numInputs.numOneInput);
+    numbers.numInputs.numTwoInput = Number(numbers.numInputs.numTwoInput);
+    if (numbers.numInputs.operatorInput === '+') {
+        addAnswer = numbers.numInputs.numOneInput+numbers.numInputs.numTwoInput;
+        // console.log(addAnswer);
+        return addAnswer;
     }
-    if (numbers.operatorInput === '-') {
-        addAnswer = numbers.num1Input - numbers.num2Input;
-        console.log(addAnswer);
-        return addAnswer 
-        addAnswer 
+    if (numbers.numInputs.operatorInput === '-') {
+        addAnswer = numbers.numInputs.numOneInput - numbers.numInputs.numTwoInput;
+        // console.log(addAnswer);
+        return addAnswer;
     }
-    if (numbers.operatorInput === '/') {
-        addAnswer = numbers.num1Input / numbers.num2Input;
-        console.log(addAnswer);
-        return addAnswer
+    if (numbers.numInputs.operatorInput === '/') {
+        addAnswer = numbers.numInputs.numOneInput / numbers.numInputs.numTwoInput;
+        // console.log(addAnswer);
+        return addAnswer;
     }
-    if (numbers.operatorInput === '*') {
-        addAnswer = numbers.num1Input * numbers.num2Input;
-        console.log(addAnswer);
-        return addAnswer
-    }
-    let completeObject = {
-        n1i : numbers.num1Input,
-        n2i : numbers.num2Input,
-        op : numbers.operatorInput,
-        ans : addAnswer,
-    }
-    historyArray.push(completeObject)
-}
-
-
-
-
-function doSomeMath(){
-    req.body.numInputs.numOneInput = Number(req.body.numInputs.numOneInput);
-    req.body.numInputs.numTwoInput = Number(req.body.numInputs.numTwoInput);
-    if (req.body.numInputs.operatorInput === '+') {
-        addAnswer = req.body.numInputs.numOneInput+req.body.numInputs.numTwoInput;
-        console.log(addAnswer);
-        return addAnswer 
-    }
-    else if (req.body.numInputs.operatorInput === '-') {
-        addAnswer = req.body.numInputs.numOneInput - req.body.numInputs.numTwoInput;
-        console.log(addAnswer);
-        return addAnswer 
-    }
-    else if (req.body.numInputs.operatorInput === '/') {
-        addAnswer = req.body.numInputs.numOneInput / req.body.numInputs.numTwoInput;
-        console.log(addAnswer);
-        return addAnswer
-    }
-    else if (req.body.numInputs.operatorInput === '*') {
-        addAnswer = req.body.numInputs.numOneInput * req.body.numInputs.numTwoInput;
-        console.log(addAnswer);
-        return addAnswer
+    if (numbers.numInputs.operatorInput === '*') {
+        addAnswer = numbers.numInputs.numOneInput * numbers.numInputs.numTwoInput;
+        // console.log(addAnswer);
+        return addAnswer;
     }
 }
+
+
 
 
 

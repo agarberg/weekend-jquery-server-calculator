@@ -1,4 +1,4 @@
-let operator 
+let operator
 let numInputs
 
 $(document).ready(onReady);
@@ -30,14 +30,12 @@ function multiply(){
 }
 //gather input values and assign operator
 function gatherValues(){
-    numOneInput = $('#firstInput').val(),
-    numTwoInput=$('#secondInput').val(),
-    numInputs = {
-      num1Input : numOneInput,
-      num2Input : numTwoInput,
-      operatorInput : operator,
-    }
-    sendNumbers(numInputs)
+  numInputs =    { 
+    numOneInput : $('#firstInput').val(),
+    numTwoInput : $('#secondInput').val(),
+    operatorInput : operator,
+}
+  sendNumbers(numInputs)
 }
 //END input functions
 
@@ -49,13 +47,13 @@ function clearInputs() {
 }
 
 // // POST request 
-function sendNumbers(numInputs) {
+function sendNumbers() {
     console.log(numInputs);
     // use AJAX to make a POST request to server
     $.ajax({
       method: 'POST', // type of request
       url: '/numbers', // route we will match on
-      data: numInputs
+      data: {numInputs}
     }).then(function(response) {
       console.log('We sent a POST');
       getNumbers(); 
@@ -75,22 +73,28 @@ function getNumbers() {
     }).then(function(response) {
       console.log('We Got It!', response);
       // TODO append quotes to DOM
-      renderToDom(response);
+      renderHistory(response);
+      // renderAnswer(response);
     }).catch(function(response) {
       console.log('Something Bad Happened, GET', response);
     })
   }
     
-  function renderToDom(historyArray) {
+  function renderHistory(startArray) {
     // empty element before reappending everything
     $('#history').empty();
-    for (let i of historyArray) {
+    for (let i of startArray) {
         $('#history').append(`
-        <li>${i.n1i} ${i.op}, ${i.n2i} = ${i.ans} </li>
+        <li>${i.numOneInput}${i.operatorInput}${i.numTwoInput}=</li>
       `);
-    }
   }
-  
+}
+  function renderAnswer(startArray){ 
+    for (let i of startArray) {
+      $('#answer').empty();
+      $('#answer').append(i.result);
+}
+}
     
 
 
